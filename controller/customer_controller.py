@@ -33,6 +33,9 @@ async def update_customer(customer_id: int, customer: Customer):
 
 @router.delete("/{customer_id}")
 async def delete_customer(customer_id: int):
+    existing_customer = await customer_repository.get_by_id(customer_id)
+    if not existing_customer:
+        raise HTTPException(status_code=404, detail=f"Cannot delete customer! Customer with id: {customer_id} not found!")
     await customer_repository.delete_by_id(customer_id)
 
 
