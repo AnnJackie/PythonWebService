@@ -23,7 +23,11 @@ async def create_customer(customer: Customer):
         "status": customer.status.name,
     }
 
-    await database.execute(query, values)
+    async with database.transaction():
+        await database.execute(query, values)
+        last_record_id = await database.fetch_one("SELECT LAST_INSERT_ID()")
+
+    return last_record_id[0]
 
 async def update_customer(customer_id: int, customer: Customer):
     query = """

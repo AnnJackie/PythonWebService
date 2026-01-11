@@ -16,18 +16,18 @@ async def get_all() -> List[Customer]:
     return await customer_repository.get_all()
 
 
-async def create_customer(customer: Customer) -> None:
+async def create_customer(customer: Customer) -> int:
     if customer.status == CustomerStatus.VIP:
         vip_customers = await customer_repository.get_by_status(CustomerStatus.VIP)
         if len(vip_customers) < MAX_VIP_CUSTOMERS_ALLOWED:
-            await customer_repository.create_customer(customer)
+            return await customer_repository.create_customer(customer)
         else:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
                 detail=f"No more than {MAX_VIP_CUSTOMERS_ALLOWED} VIP customers are allowed"
             )
     else:
-        await customer_repository.create_customer(customer)
+        return await customer_repository.create_customer(customer)
 
 
 async def update_customer(customer_id: int, customer: Customer) -> bool:

@@ -14,8 +14,9 @@ CREATE TABLE customer_order (
     id int(11) NOT NULL AUTO_INCREMENT,
     customer_id int(11) NOT NULL,
     item_name varchar(300) NOT NULL DEFAULT '',
-    price int(11) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (customer_id) REFERENCES customer(id)
 );
+
 
