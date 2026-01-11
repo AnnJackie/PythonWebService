@@ -26,8 +26,8 @@ async def create_customer(customer: Customer):
 
 @router.put("/{customer_id}")
 async def update_customer(customer_id: int, customer: Customer):
-    customer = await customer_repository.get_by_id(customer_id)
-    if not customer:
+    existing_customer = await customer_repository.get_by_id(customer_id)
+    if not existing_customer:
         raise HTTPException(status_code=404, detail=f"Cannot update customer! Customer with id: {customer_id} not found!")
     await customer_repository.update_customer(customer_id, customer)
 
