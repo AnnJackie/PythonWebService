@@ -6,6 +6,7 @@ CREATE TABLE customer (
     first_name varchar(300) NOT NULL DEFAULT '',
     last_name varchar(300) NOT NULL DEFAULT '',
     email varchar(300) NOT NULL DEFAULT '',
+    status varchar(300) NOT NULL DEFAULT '',
     PRIMARY KEY (id)
 );
 
