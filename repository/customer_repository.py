@@ -1,4 +1,4 @@
-from model.customer import Customer
+from model.customer import Customer, CustomerStatus
 from repository.database import database
 
 customer_fields = ['first_name', 'last_name', 'email', 'status']
@@ -47,3 +47,8 @@ async def update_customer(customer_id: int, customer: Customer):
 async def delete_by_id(customer_id: int):
     query = "DELETE FROM customer WHERE id=:customer_id"
     return await database.execute(query, values={"customer_id": customer_id})
+
+
+async def get_by_status(customer_status: CustomerStatus):
+    query = "SELECT * FROM customer WHERE status=:customer_status"
+    return await database.fetch_all(query, values={"customer_status": customer_status.name})

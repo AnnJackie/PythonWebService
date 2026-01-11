@@ -1,11 +1,9 @@
 from typing import List
 
-from starlette import status
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, status
 
 from model.customer import Customer
-from repository import customer_repository
-from service.user_service import user_test_service
+from service import customer_service
 
 router = APIRouter(
     prefix="/customer",
@@ -13,32 +11,42 @@ router = APIRouter(
 )
 
 
-@router.get('/{customer_id}', response_model=Customer)
+@router.get("/{customer_id}", response_model=Customer)
 async def get_customer_by_id(customer_id: int):
-    customer = await customer_repository.get_by_id(customer_id)
+    customer = await customer_service.get_by_id(customer_id)
     if not customer:
-        raise HTTPException(status_code=404, detail=f"Customer with id: {customer_id} not found!")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Customer with id {customer_id} not found"
+        )
     return customer
 
-@router.post("/")
+
+@router.get("/", response_model=List[Customer])
+async def get_all_customers():
+    return await customer_service.get_all()
+
+
+@router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_customer(customer: Customer):
-    await customer_repository.create_customer(customer)
+    await customer_service.create_customer(customer)
+
 
 @router.put("/{customer_id}")
 async def update_customer(customer_id: int, customer: Customer):
-    existing_customer = await customer_repository.get_by_id(customer_id)
-    if not existing_customer:
-        raise HTTPException(status_code=404, detail=f"Cannot update customer! Customer with id: {customer_id} not found!")
-    await customer_repository.update_customer(customer_id, customer)
+    updated = await customer_service.update_customer(customer_id, customer)
+    if not updated:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Customer with id {customer_id} not found"
+        )
 
-@router.delete("/{customer_id}")
+
+@router.delete("/{customer_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_customer(customer_id: int):
-    existing_customer = await customer_repository.get_by_id(customer_id)
-    if not existing_customer:
-        raise HTTPException(status_code=404, detail=f"Cannot delete customer! Customer with id: {customer_id} not found!")
-    await customer_repository.delete_by_id(customer_id)
-
-
-@router.get('/', response_model=List[Customer])
-async def get_all_customers():
-    return await customer_repository.get_all()
+    deleted = await customer_service.delete_customer(customer_id)
+    if not deleted:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Customer with id {customer_id} not found"
+        )
