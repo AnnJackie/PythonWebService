@@ -9,7 +9,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./resources/db-migrations:/docker-entrypoint-initdb.d/init.sql
+      - ./resources/db-migrations:/docker-entrypoint-initdb.d
     command: --default-authentication-plugin=mysql_native_password
 volumes:
   mysql-data:
