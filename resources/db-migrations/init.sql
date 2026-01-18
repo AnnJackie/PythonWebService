@@ -19,4 +19,10 @@ CREATE TABLE customer_order (
     FOREIGN KEY (customer_id) REFERENCES customer(id)
 );
 
-
+CREATE TABLE customer_favourite_item (
+    id int(11) AUTO_INCREMENT,
+    customer_id INT NOT NULL,
+    item_id INT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (customer_id) REFERENCES customer(id)
+);

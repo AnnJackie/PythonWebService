@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from starlette import status
 
-from external_api import tv_maze_api
+from api.external_api import tv_maze_api
 
 router = APIRouter(
     prefix="/tv_maze",
