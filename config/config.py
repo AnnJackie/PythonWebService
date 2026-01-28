@@ -12,3 +12,6 @@ class Config(BaseSettings):
     REDIS_HOST: str = "localhost"
     REDIS_PORT: str = "6379"
     REDIS_TTL: int = 100
+    SECRET_KEY: str = "message_app"
+    ALGORITHM: str = "HS256"
+    TOKEN_EXPIRY_TIME: float = 20.0
