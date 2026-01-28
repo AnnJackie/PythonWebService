@@ -6,6 +6,14 @@ from repository.database import database
 
 TABLE_NAME = 'user'
 
+async def get_all_users() -> list[User]:
+    query = f"SELECT * FROM {TABLE_NAME}"
+    result = await database.fetch_all(query)
+    if result:
+        return [User(**record) for record in result]
+    else:
+        return None
+
 async def get_by_username(username: str) -> Optional[User]:
     query = f"SELECT * FROM {TABLE_NAME} WHERE username=:username"
     result = await database.fetch_one(query, values={"username": username})

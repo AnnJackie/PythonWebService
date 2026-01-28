@@ -23,3 +23,10 @@ async def get_user_by_id(user: UserResponse = Depends(auth_service.validate_user
         raise token_exception()
     return await user_service.get_user_by_id(user_id)
 
+
+@router.get("/", status_code=status.HTTP_200_OK)
+async def get_all_users(user: UserResponse = Depends(auth_service.validate_user)):
+    if user is None:
+        raise token_exception()
+    return await user_service.get_all_users()
+

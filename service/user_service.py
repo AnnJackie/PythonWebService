@@ -42,6 +42,9 @@ async def get_user_by_id(user_id: int) -> Optional[UserResponse]:
 async def get_user_by_username(username: str) -> User:
     return await user_repository.get_by_username(username)
 
+async def get_all_users() -> list[User]:
+    return await user_repository.get_all_users()
+
 
 async def validate_unique_username(username) -> bool:
     existing_user = await user_repository.get_by_username(username)
